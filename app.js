@@ -1,44 +1,72 @@
-// var config = {
-//     apiKey: "AIzaSyD7V-U9UlV3OmsScd9JBX_ZMCQKsl5UsiE",
-//     authDomain: "fir-recent-user.firebaseapp.com",
-//     databaseURL: "https://fir-recent-user.firebaseio.com",
-//     storageBucket: "fir-recent-user.appspot.com"
-//   };
+
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyCXgKtXa6qtRXp4ONGCBYPFZ91wtPhU5H8",
+    authDomain: "train-scheduler-e2bd6.firebaseapp.com",
+    databaseURL: "https://train-scheduler-e2bd6.firebaseio.com",
+    projectId: "train-scheduler-e2bd6",
+    storageBucket: "",
+    messagingSenderId: "959007788516",
+    appId: "1:959007788516:web:69664dfd1c1d0245bd0bf1"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
 
 
-//   firebase.initializeApp(config);
+var database = firebase.database();
 
-// var database = firebase.database();
+// connectionsRef references a specific location in our database.
+// All of our connections will be stored in this directory.
+var connectionsRef = database.ref("/connections");
 
+// '.info/connected' is a special location provided by Firebase that is updated
+// every time the client's connection state changes.
+// '.info/connected' is a boolean value, true if the client is connected and false if they are not.
+var connectedRef = database.ref(".info/connected");
 
-// var name = "";
-// var role = "";
-// var startDate = "";
-// var monthlyRate = 0;
+// When the client's connection state changes...
+connectedRef.on("value", function(snap) {
 
-// $("#submit").on("click", function(event){
-//   event.preventDefault();
+  // If they are connected..
+  if (snap.val()) {
 
-//   name = $("#name-input").val().trim();
-//   role = $("#role-input").val().trim();
-//   startDate = $("#date-input").val().trim();
-//   monthlyRate = $("#rate-input").val().trim();
+    // Add user to the connections list.
+    var con = connectionsRef.push(true);
+    // Remove user from the connection list when they disconnect.
+    con.onDisconnect().remove();
+  }
+});
 
-//   database.ref().push({
-//       name: name,
-//       role: role,
-//       startDate: startDate,
-//       monthlyRate: monthlyRate
-//   });
-// });
+var name = "";
+var destination = "";
+var firstTrain = "";
+var frequency = 0;
 
-// database.ref().on("child_added", function(snapshot){
-//   $("#name-input").text(snapshot.val().name);
-//   $("#role-input").text(snapshot.val().role);
-//   $("#date-input").text(snapshot.val().startDate);
-//   $("#rate-input").text(snapshot.val().monthlyRate);
-// },
+$("#submit").on("click", function(event){
+  event.preventDefault();
 
-// function(errorObject) {
-//     console.log("Errors handled: " + errorObject.code);
-//   });
+  name = $("#name-input").val().trim();
+  destination = $("#destination-input").val().trim();
+  firstTrain = $("#first-input").val().trim();
+  frequency = $("#frequency-input").val().trim();
+  addRow = "<tr><td>" + name + "</td>" + "<td>" + role + "</td>" + 
+
+  database.ref().push({
+      name: name,
+      destination: destination,
+      firstTrain: firstTrain,
+      frequency: frequency
+  });
+});
+
+database.ref().on("child_added", function(snapshot){
+  $("#name-input").text(snapshot.val().name);
+  $("#destination-input").text(snapshot.val().role);
+  $("#first-input").text(snapshot.val().startDate);
+  $("#frequency-input").text(snapshot.val().monthlyRate);
+
+},
+
+function(errorObject) {
+    console.log("Errors handled: " + errorObject.code);
+  });
