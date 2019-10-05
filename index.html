@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script>
+    
     <link rel="stylesheet" type="text/css" href="style.css">
     <h1>Train Scheduler</h1>
 
@@ -12,13 +15,15 @@
 
 
 <body>
+    <!-- Link to Moment.js -->
+  <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 
     <div class="card">
     <h3>Current Train Schedule</h3>
-    <table class="table">
+    <table class="table" id="schedule">
         <thead>
             <tr>
-                <th scope="col">Train Time</th>
+                <th scope="col">Train Name</th>
                 <th scope="col">Destination</th>
                 <th scope="col">Frequency (Min)</th>
                 <th scope="col">Next Arrival</th>
@@ -32,29 +37,29 @@
         <h3>Add Train</h3>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="name-input">Train Name</span>
+                <span class="input-group-text">Train Name</span>
             </div>
-            <input type="text" class="form-control" aria-describedby="basic-addon1">
-            </div>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="destination-input">Destination</span>
-            </div>
-            <input type="text" class="form-control" aria-describedby="basic-addon1">
+            <input type="text" class="form-control" id="name-input" aria-describedby="basic-addon1">
             </div>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="first-input">First Train Time (HH:mm - military time)</span>
+                <span class="input-group-text">Destination</span>
             </div>
-            <input type="text" class="form-control" aria-describedby="basic-addon1">
+            <input type="text" class="form-control" id="destination-input" aria-describedby="basic-addon1">
             </div>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="frequency-input">Frequency (min)</span>
+                <span class="input-group-text">First Train Time (HH:mm - military time)</span>
             </div>
-            <input type="text" class="form-control" aria-describedby="basic-addon1">
+            <input type="text" class="form-control" id="first-input" aria-describedby="basic-addon1">
             </div>
-        <button type="button" class="btn btn-primary">Submit</button>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Frequency (min)</span>
+            </div>
+            <input type="text" class="form-control" id="frequency-input" aria-describedby="basic-addon1">
+            </div>
+        <button type="button" class="btn btn-primary" id="submit-info">Submit</button>
     </div>
 
 
@@ -69,7 +74,7 @@
 
 
 <!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/6.6.2/firebase-app.js"></script>
+<!-- <script src="https://www.gstatic.com/firebasejs/6.6.2/firebase-app.js"></script> -->
 
 <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#config-web-app -->
